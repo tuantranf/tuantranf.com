@@ -10,7 +10,7 @@ const siteMetadata = {
   siteLogo: '/static/images/logo.png',
   image: '/static/images/avatar.jpeg',
   socialBanner: '/static/images/twitter-card.png',
-  email: 'hi@tuantranf.com',
+  email: 'hello@tuantranf.com',
   github: 'https://github.com/tuantranf',
   // twitter: 'https://twitter.com/tuantranf',
   // facebook: 'https://facebook.com',
