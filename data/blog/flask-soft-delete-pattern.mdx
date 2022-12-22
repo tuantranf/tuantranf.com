@@ -1,0 +1,110 @@
+---
+title: 'Thiết kế Soft Delete pattern trong Flask và SQLAlchemy'
+date: '2022-12-22'
+tags: ['flask', 'til', 'soft-delete', 'programming', 'python']
+draft: false
+summary: 'Thiết kế Soft Delete pattern trong Flask và SQLAlchemy'
+---
+
+<div className="flex flex-wrap -mx-2 overflow-hidden xl:-mx-2">
+  <div className="my-1 px-2">
+    ![Delete](https://archive.tuantranf.com/wp-content/uploads/2020/08/u-j-e-s-h-7ySd00IGyx4-unsplash-730x1024.jpg)
+  </div>
+</div>
+
+Mỗi lần lập trình các chức năng để xóa dữ liệu record trong dữ liệu thì mình hồi hộp lắm. Đầu tiên, chỉ cần sai sót một chút thì dữ liệu ra đi không trở lại. Thứ 2, mình không biết dữ liệu được xóa đi có cần thiết khi hệ thống cần audit trong tương lai không. Theo mình biết thì một số hệ thống làm tài chính, hoặc dự án chính phủ thì việt truy xuất lại dữ liệu, log của 6 tháng hoặc 1 năm trước là hoàn toàn bình thường.
+
+Khi đấy có lẽ thiết kế Soft delete là một giải pháp hợp lý. Tuy nhiên mình nghĩ soft delete cũng có ưu điểm và khuyết điểm nên khi sử dụng cũng phải cân nhắc cẩn thận
+
+Tham khảo: http://abstraction.blog/2015/06/28/soft-vs-hard-delete
+
+## Soft Delete Pattern
+
+Gần đây mình có làm dự án sử dụng Flask framework & SQLAlchemy để kết nối đến Postgres nên muốn chia sẻ một chút về thiết kế soft delete trong SQLAlchemy.
+
+Để đơn giản thì ta chỉ cần thêm một field thường flag là deleted dạng bool để lưu thông tin record đã bị xóa hay chưa.
+
+Tuy nhiên, mình thường dùng cột 1 timestamp là deleted_at lưu thời gian xóa record thay cho flag deleted . Nhằm mục đích quản lý được thời gian dữ liệu bị xóa, khi cần thì có thể query lọc theo ngày, giờ nhất định. Như thế sẽ tiện cho việc thống kê, phân tích sau này.
+
+Ví dụ: Mình có một model user như sau
+
+models/user.py
+
+```python
+class User(db.Model):
+    __tablename__ = 'users'
+
+    id = db.Column('id',
+                   db.BigInteger().with_variant(sqlite.INTEGER(), 'sqlite'),
+                   primary_key=True)
+    email = db.Column('email', db.String(255), nullable=False)
+    password = db.Column('password', db.String(255), nullable=False)
+```
+
+Cách đơn giản nhất là thêm cột mới deleted_at vào bảng users rồi khi query chỉ lọc lấy những record có deleted_at là null.
+
+Nhưng như thế thì sẽ không tối ưu được code + mỗi câu query mình phải thêm bộ lọc như trên vào
+
+Để tối ưu hóa code mình sẽ thiết kế một class abstract tên là SoftDeleteModel với query_class là một class đã được tùy biến lọc deleted_at != null
+
+soft_delete_model.py
+
+```python
+from flask_sqlalchemy import BaseQuery
+
+from ..database import db
+
+
+class QueryWithSoftDelete(BaseQuery):
+    def __new__(cls, *args, **kwargs):
+        obj = super(QueryWithSoftDelete, cls).__new__(cls)
+
+        if len(args) > 0:
+            super(QueryWithSoftDelete, obj).__init__(*args, **kwargs)
+            return obj.filter_by(deleted_at=None)
+        return obj
+
+    def __init__(self, *args, **kwargs):
+        pass
+
+
+class SoftDeleteModel(db.Model):
+    __abstract__ = True
+
+    __soft_delete__ = True
+
+    # override default query class
+    query_class = QueryWithSoftDelete
+
+    deleted_at = db.Column('deleted_at', db.TIMESTAMP, nullable=True)
+```
+
+Khi đấy model User sẽ được viết lại như thế này
+
+models/user.py
+
+```python
+from .soft_delete_model import SoftDeleteModel
+
+class User(SoftDeleteModel)
+    __tablename__ = 'users'
+
+    id = db.Column('id',
+                   db.BigInteger().with_variant(sqlite.INTEGER(), 'sqlite'),
+                   primary_key=True)
+    email = db.Column('email', db.String(255), nullable=False)
+    password = db.Column('password', db.String(255), nullable=False)
+
+```
+
+Chỉ cần kế thừa model SoftDeleteModel thì User sẽ có tính năng Soft Delete. Đơn giản quá đúng không?!
+
+## Kết
+
+Tóm lại, trong bài viết mình đã giới thiệu về cách implement Soft Delete pattern trong Flask framework & SQLAlchemy. Nếu bạn có feedback gì thì xin để lại comment hoặc liên lạc cho mình theo email `hello{@}tuantranf.com` nhé.
+
+Tham khảo:
+
+- https://blog.miguelgrinberg.com/post/implementing-the-soft-delete-pattern-with-flask-and-sqlalchemy
+- http://abstraction.blog/2015/06/28/soft-vs-hard-delete
+- https://medium.com/@chrissoemma/laravel-5-8-delete-and-soft-delete-practical-examples-b9b71c0a97f
