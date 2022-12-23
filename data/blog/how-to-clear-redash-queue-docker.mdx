@@ -1,0 +1,43 @@
+---
+title: 'How to clear Redash queue on Docker deployment'
+date: '2022-12-23'
+tags: ['redash', 'til', 'redis', 'programming', 'queue']
+draft: false
+summary: 'How to clear Redash queue on Docker deployment'
+---
+
+<div className="flex flex-wrap -mx-2 overflow-hidden xl:-mx-2">
+  <div className="my-1 px-2">
+    ![Redash](https://redash.io/assets/images/elements/query-editor-focus.png)
+  </div>
+</div>
+
+## About redash
+
+Redash helps you make sense of your data. Connect and query your data sources, build dashboards to visualize data and share them with your company.
+
+https://redash.io
+
+## How to clear all queue
+
+I’ve updated from v7 to v8 and moved to docker containers.
+I’m not sure how to clear my query queues now (what used to be redis-cli flushall).
+
+We need to execute it from the Dockerized Redis now (docker-compose exec redis redis-cli)
+
+Check all Redis keys
+
+```
+sudo docker-compose exec redis redis-cli keys "*"
+```
+
+flushall Redis data
+
+```
+sudo docker-compose exec redis redis-cli flushall
+```
+
+References:
+
+- [https://discuss.redash.io/t/clearing-query-queues-on-docker/5013/2](https://discuss.redash.io/t/clearing-query-queues-on-docker/5013/2)
+- [Clearing query queues on docker](https://discuss.redash.io/t/clearing-query-queues-on-docker/5013/2)
