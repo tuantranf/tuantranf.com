@@ -10,7 +10,8 @@
     "analyze": "cross-env ANALYZE=true next build",
     "lint": "next lint --fix --dir pages --dir components --dir lib --dir layouts --dir scripts",
     "prepare": "husky install",
-    "blog": "git checkout -b \"blog/$(date '+%Y-%m-%d-%H-%M')\""
+    "blog": "git checkout -b \"blog/$(date '+%Y-%m-%d-%H-%M')\"",
+    "release": "gh pr create --base release -t \"release $(date '+%Y-%m-%d %H:%M')\" --head=master"
   },
   "dependencies": {
     "@fontsource/inter": "4.5.2",
