@@ -1,0 +1,178 @@
+---
+title: '[TIL] Setup tinyproxy on Centos Linux'
+date: '2023-01-11'
+tags: ['tinyproxy', 'til', 'linux', 'centos', 'proxy']
+draft: false
+summary: 'How to setup tinyproxy on Centos Linux - Be anonymous, create your own proxy server with CentOS Linux'
+---
+
+<div className="-mx-2 flex flex-wrap overflow-hidden xl:-mx-2">
+  <div className="my-1 px-2">![Proxy](/static/images/proxy-server.webp)</div>
+</div>
+
+One of the best ways to be secure while browsing the Internet is by using proxy servers. The proxy server is an important thing to know about nowadays.
+
+## What's a proxy server?
+
+A proxy, in the English definition, is the "authority or power to act for another." A proxy server, in the computing context, is a server that acts on behalf of another server, or a user's machine.
+
+By using a proxy to browse the Internet all of the user's Internet traffic appears to come from the proxy server instead of their machine. To set up a free high-speed proxy server all you need is a free tier AWS account.
+
+## Create your own proxy server
+
+We will use TinyProxy to setup our server as the Proxy.
+Tinyproxy: https://tinyproxy.github.io/
+
+Tinyproxy is a light-weight HTTP/HTTPS proxy daemon for POSIX operating systems. Designed from the ground up to be fast and yet small, it is an ideal solution for use cases such as embedded deployments where a full featured HTTP proxy is required, but the system resources for a larger proxy are unavailable.
+
+We can install TinyProxy via yum command like this article [Install Tinyproxy on Centos 7
+](https://juzhax.com/2016/07/install-tinyproxy-on-centos-7/). However, the TinyProxy version is 1.8.5, it is quite old. I want to use the authentication function `BasicAuth` so will install from the source code.
+
+### Get latest TinyProxy version
+
+Get latest TinyProxy version from [Releases](https://github.com/tinyproxy/tinyproxy/releases) page. I use the latest version 1.11.0
+
+```bash
+wget https://github.com/tinyproxy/tinyproxy/releases/download/1.11.0/tinyproxy-1.11.0.tar.bz2
+tar -jxvf tinyproxy-1.11.0.tar.bz2
+cd tinyproxy-1.11.0/
+```
+
+### Install all dependencies
+
+It requires some Linux packages for compile the TinyProxy from source code.
+
+```bash
+sudo yum update -y \
+&& sudo yum install make g++ gcc autogen automake autoconf asciidoc cmake git vim -y \
+&& sudo yum groupinstall 'Development Tools' -y
+```
+
+### Build TinyProxy
+
+In TinyProxy directory we build the binary files
+
+```bash
+cd tinyproxy-1.11.0/
+./autogen.sh
+./configure
+make
+```
+
+Install the binary. The binary file will be installed to `/usr/local/bin/tinyproxy` so we need `sudo`
+
+```bash
+sudo make install
+```
+
+Check version
+
+```bash
+/usr/local/bin/tinyproxy -v
+```
+
+### Update TinyProxy configuration
+
+The quickest way to get started is using a minimal config file like the below:
+
+Update the configuration file `/etc/tinyproxy/tinyproxy.conf`
+
+```bash
+sudo vim /etc/tinyproxy/tinyproxy.conf
+```
+
+```
+User root
+Group root
+Port 8888
+Timeout 600
+DefaultErrorFile "/usr/share/tinyproxy/default.html"
+Logfile "/var/log/tinyproxy.log"
+LogLevel Info
+PidFile "/var/run/tinyproxy.pid"
+MaxRequestsPerChild 0
+BasicAuth your_user your_password
+```
+
+Please check the document [here](https://tinyproxy.github.io/) for more detail configuration.
+
+### Create service for TinyProxy
+
+We create a system service to keep TinyProxy running more stable.
+
+Create the file named by `/etc/systemd/system/tinyproxy.service`
+
+```bash
+sudo vim /etc/systemd/system/tinyproxy.service
+```
+
+```
+[Unit]
+Description=TinyProxy Service
+Requires=network.target
+After=network.target
+[Service]
+Type=forking
+PIDFile=/var/run/tinyproxy.pid
+ExecStart=/usr/local/bin/tinyproxy -c /etc/tinyproxy/tinyproxy.conf
+Restart=on-failure
+[Install]
+WantedBy=multi-user.target
+```
+
+### Run TinyProxy service
+
+Enable tinyproxy service from OS start
+
+```
+sudo systemctl enable tinyproxy
+```
+
+Start the service
+
+```bash
+sudo service tinyproxy restart
+```
+
+Check the service status
+
+```bash
+sudo service tinyproxy status
+```
+
+The output should be like
+
+```
+$ sudo service tinyproxy status
+Redirecting to /bin/systemctl status tinyproxy.service
+● tinyproxy.service - TinyProxy Service
+   Loaded: loaded (/etc/systemd/system/tinyproxy.service; disabled; vendor preset: disabled)
+   Active: active (running) since Tue 2023-01-10 14:52:30 UTC; 2s ago
+  Process: 20361 ExecStart=/usr/local/bin/tinyproxy -c /etc/tinyproxy/tinyproxy.conf (code=exited, status=0/SUCCESS)
+ Main PID: 20363 (tinyproxy)
+   CGroup: /system.slice/tinyproxy.service
+           └─20363 /usr/local/bin/tinyproxy -c /etc/tinyproxy/tinyproxy.conf
+
+Jan 10 14:52:30 systemd[1]: Starting TinyProxy Service...
+```
+
+### Test your own proxy
+
+From your machine test the proxy by checking your machine IP
+
+```bash
+# from proxy server
+curl --proxy http://your_user:your_password@127.0.0.1:8888 https://ipinfo.io/ip
+
+# from another server
+curl --proxy http://your_user:your_password@127.0.0.1:8888 https://ipinfo.io/ip
+```
+
+Tada 🍻 Happy Proxy 🍻
+
+Thank your for reading!
+
+## References
+
+- [https://gist.github.com/kooroshh/2084ed52e81bcf6d60c5b0aa37524ed0](https://gist.github.com/kooroshh/2084ed52e81bcf6d60c5b0aa37524ed0)
+- https://dev.to/viralsangani/be-anonymous-create-your-own-proxy-server-with-aws-ec2-2k63
