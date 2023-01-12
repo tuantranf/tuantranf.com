@@ -6,6 +6,9 @@ module.exports = {
     node: true,
     es6: true,
   },
+  globals: {
+    JSX: 'readonly',
+  },
   extends: ['eslint:recommended', 'plugin:prettier/recommended', 'next', 'next/core-web-vitals'],
   rules: {
     'prettier/prettier': 'error',
