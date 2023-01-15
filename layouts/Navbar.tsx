@@ -1,6 +1,6 @@
 import Container from 'components/Container'
 import Socials from 'components/Socials'
-import siteMetaData from '@/data/siteMetaData'
+import siteMetadata from '@/data/siteMetadata'
 import Link from 'next/link'
 
 export default function Navbar() {
@@ -9,7 +9,7 @@ export default function Navbar() {
       <Container>
         <div className="flex w-full justify-between py-4 ">
           <Link href="/" passHref>
-            <div className="cursor-pointer text-xl font-bold">{siteMetaData.author}</div>
+            <div className="cursor-pointer text-xl font-bold">{siteMetadata.author}</div>
           </Link>
           <Socials />
         </div>

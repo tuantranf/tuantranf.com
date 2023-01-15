@@ -43,7 +43,7 @@ const mapArticleProperties = (article) => {
     coverImage:
       properties?.coverImage?.files[0]?.file?.url ||
       properties?.coverImage?.files[0]?.external?.url ||
-      '/image-background.png',
+      '/static/images/ocean.jpeg',
     publishedDate: properties?.publishedAt?.date?.start ?? '',
     summary: properties?.description?.rich_text[0]?.plain_text ?? '',
   }

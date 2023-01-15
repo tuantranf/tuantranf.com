@@ -1,4 +1,4 @@
-import siteMetaData from '@/data/siteMetaData'
+import siteMetadata from '@/data/siteMetadata'
 import Image from 'next/image'
 import UseAnimations from 'react-useanimations'
 import github from 'react-useanimations/lib/github'
@@ -8,17 +8,17 @@ import twitter from 'react-useanimations/lib/twitter'
 const socials = [
   {
     name: 'Twitter',
-    href: siteMetaData.twitter,
+    href: siteMetadata.twitter,
     animation: twitter,
   },
   {
     name: 'LinkedIn',
-    href: siteMetaData.linkedin,
+    href: siteMetadata.linkedin,
     animation: linkedin,
   },
   {
     name: 'GitHub',
-    href: siteMetaData.github,
+    href: siteMetadata.github,
     animation: github,
   },
 ]

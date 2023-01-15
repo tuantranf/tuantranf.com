@@ -7,18 +7,15 @@ import getLocalizedDate from '@/utils/getLocalizedDate'
 import Container from '@/components/Container'
 import slugify from 'slugify'
 import ArticleList from '@/components/ArticleList'
-import siteMetaData from '@/data/siteMetaData'
+import siteMetadata from '@/data/siteMetadata'
+import Image from '@/components/Image'
 
 const ArticlePage = ({ content, title, coverImage, publishedDate, summary, moreArticles }) => {
   const publishedOn = getLocalizedDate(publishedDate)
 
   const slug = slugify(title).toLowerCase()
 
-  // const ogImage = `https://www.phung.io/api/og-image?title=${encodeURIComponent(
-  //   title
-  // )}&date=${encodeURIComponent(publishedOn)}`;
-
-  const ogImage = `${siteMetaData.websiteUrl}/api/og-image?title=${encodeURIComponent(
+  const ogImage = `${siteMetadata.websiteUrl}/api/og-image?title=${encodeURIComponent(
     title
   )}&date=${encodeURIComponent(publishedOn)}`
 
@@ -32,7 +29,7 @@ const ArticlePage = ({ content, title, coverImage, publishedDate, summary, moreA
         ogUrl={`/notion-blog/${slug}`}
       >
         <div>
-          <div className="mx-auto -mb-48 bg-gray-100 px-6 py-16 pb-48 text-center md:-mb-96 md:pb-96">
+          <div className="mx-auto -mb-48 px-6 py-16 pb-48 text-center md:-mb-96 md:pb-96">
             <div className="mx-auto max-w-3xl">
               <div className="mb-2 flex items-center justify-center space-x-2 text-sm text-gray-500">
                 <div className="">{publishedOn}</div>
@@ -47,7 +44,15 @@ const ArticlePage = ({ content, title, coverImage, publishedDate, summary, moreA
           </div>
 
           <div className="mx-auto my-16 max-w-5xl px-6 md:px-8">
-            <img className="aspect-video w-full rounded-xl object-cover" src={coverImage} />
+            {coverImage && (
+              <Image
+                className="aspect-video w-full rounded-xl object-cover"
+                src={coverImage}
+                alt="cover image"
+                width={400}
+                height={300}
+              />
+            )}
           </div>
           <div className="mx-auto mb-24 max-w-4xl space-y-8 px-6 md:px-8">
             {content.map((block) => (

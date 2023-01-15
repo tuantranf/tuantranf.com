@@ -1,11 +1,12 @@
 /* eslint-disable no-case-declarations */
 
 import React, { Fragment } from 'react'
-import Text from 'components/notionBlocks/Text'
-import AnchorLink from 'components/notionBlocks/AnchorLink'
-import CodeBlock from 'components/notionBlocks/CodeBlock'
-import Callout from 'components/notionBlocks/Callout'
-import YoutubeEmbed from 'components/notionBlocks/YoutubeEmbed'
+import Text from '@/components/notionBlocks/Text'
+import AnchorLink from '@/components/notionBlocks/AnchorLink'
+import CodeBlock from '@/components/notionBlocks/CodeBlock'
+import Callout from '@/components/notionBlocks/Callout'
+import YoutubeEmbed from '@/components/notionBlocks/YoutubeEmbed'
+import Image from '@/components/Image'
 
 export function renderBlocks(block) {
   const { type, id } = block
@@ -84,7 +85,7 @@ export function renderBlocks(block) {
       const caption = value.caption.length >= 1 ? value.caption[0].plain_text : ''
       return (
         <figure className="mt-0">
-          <img
+          <Image
             className="aspect-video rounded-lg"
             src={src}
             placeholder="blur"

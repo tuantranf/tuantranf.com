@@ -1,6 +1,7 @@
 import { Article } from '@/utils/types'
 import slugify from 'slugify'
 import getLocalizedDate from '@/utils/getLocalizedDate'
+import Image from '@/components/Image'
 
 type Props = {
   article: Article
@@ -26,11 +27,15 @@ export default function ArticleCard({ article }: Props) {
             ))}
           </div>
           <div className=" contrast-[0.9] filter">
-            <img
-              className="aspect-video w-full rounded-lg bg-gray-50 object-cover transition group-hover:opacity-90"
-              src={article.coverImage}
-              alt={'article cover'}
-            />
+            {article.coverImage && (
+              <Image
+                className="aspect-video w-full rounded-lg bg-gray-50 object-cover transition group-hover:opacity-90"
+                src={article.coverImage}
+                alt={'article cover'}
+                width={400}
+                height={300}
+              />
+            )}
           </div>
         </div>
         <div className="flex flex-1 flex-col justify-between bg-white py-4">
