@@ -15,7 +15,7 @@ const ArticlePage = ({ content, title, coverImage, publishedDate, summary, moreA
 
   const slug = slugify(title).toLowerCase()
 
-  const ogImage = `${siteMetadata.websiteUrl}/api/og-image?title=${encodeURIComponent(
+  const ogImage = `${siteMetadata.siteUrl}/api/og-image?title=${encodeURIComponent(
     title
   )}&date=${encodeURIComponent(publishedOn)}`
 

@@ -23,7 +23,7 @@ export function MetaHead(props) {
       <meta property="og:image" content={imageUrl} />
 
       <meta name="twitter:card" content="summary_large_image" />
-      <meta property="twitter:domain" content={siteMetadata.websiteUrl} />
+      <meta property="twitter:domain" content={siteMetadata.siteUrl} />
       <meta property="twitter:url" content={ogUrl} />
       <meta name="twitter:title" content={titleName} />
       <meta name="twitter:description" content={description} />
