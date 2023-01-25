@@ -52,11 +52,14 @@ const securityHeaders = [
   },
 ]
 
-module.exports = withBundleAnalyzer({
+const nextConfig = {
   reactStrictMode: true,
-  pageExtensions: ['js', 'jsx', 'md', 'mdx'],
+  pageExtensions: ['js', 'jsx', 'md', 'mdx', 'tsx'],
   eslint: {
     dirs: ['pages', 'components', 'lib', 'layouts', 'scripts'],
+  },
+  images: {
+    domains: ['tuantranf.com', 's3.us-west-2.amazonaws.com', 'archive.tuantranf.com'],
   },
   async headers() {
     return [
@@ -84,4 +87,6 @@ module.exports = withBundleAnalyzer({
 
     return config
   },
-})
+}
+
+module.exports = withBundleAnalyzer(nextConfig)
