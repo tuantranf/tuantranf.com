@@ -63,7 +63,7 @@ const ArticlePage = ({ content, title, coverImage, publishedDate, summary, moreA
             <Container>
               <div className="my-8 flex items-center justify-between">
                 <div className="text-3xl font-bold text-gray-900">Latest articles</div>
-                <Link href="/">
+                <Link href="/" passHref={true}>
                   <span className="cursor-pointer font-semibold text-gray-900">
                     More articles ➜
                   </span>
