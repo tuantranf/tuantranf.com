@@ -116,20 +116,32 @@ export const BlogSEO = ({
 }: BlogSeoProps) => {
   const publishedAt = new Date(date).toISOString()
   const modifiedAt = new Date(lastmod || date).toISOString()
-  const imagesArr =
-    images.length === 0
-      ? [siteMetadata.socialBanner]
-      : typeof images === 'string'
-      ? [images]
-      : images
+  // const imagesArr =
+  //   images.length === 0
+  //     ? [siteMetadata.socialBanner]
+  //     : typeof images === 'string'
+  //     ? [images]
+  //     : images
 
-  const featuredImages = imagesArr.map((img) => {
-    return {
-      '@type': 'ImageObject',
-      url: `${siteMetadata.siteUrl}${img}`,
-    }
-  })
+  // let featuredImages = imagesArr.map((img) => {
+  //   return {
+  //     '@type': 'ImageObject',
+  //     url: `${siteMetadata.siteUrl}${img}`,
+  //   }
+  // })
 
+  let featuredImages = []
+  if (featuredImages.length === 0) {
+    const ogImage = `${siteMetadata.siteUrl}/api/og-image?title=${encodeURIComponent(
+      title
+    )}&date=${encodeURIComponent(date)}`
+    featuredImages = [
+      {
+        '@type': 'ImageObject',
+        url: `${ogImage}`,
+      },
+    ]
+  }
   let authorList
   if (authorDetails) {
     authorList = authorDetails.map((author) => {

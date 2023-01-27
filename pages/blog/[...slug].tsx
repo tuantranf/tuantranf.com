@@ -36,12 +36,12 @@ export const getStaticProps: GetStaticProps<{
   const next: { slug: string; title: string } = allPosts[postIndex - 1] || null
   const post = await getFileBySlug<PostFrontMatter>('blog', slug)
   // @ts-ignore
-  const authorList = post.frontMatter.authors || ['default']
-  const authorPromise = authorList.map(async (author) => {
-    const authorResults = await getFileBySlug<AuthorFrontMatter>('authors', [author])
-    return authorResults.frontMatter
-  })
-  const authorDetails = await Promise.all(authorPromise)
+  // const authorList = post.frontMatter.authors || ['default']
+  // const authorPromise = authorList.map(async (author) => {
+  //   const authorResults = await getFileBySlug<AuthorFrontMatter>('authors', [author])
+  //   return authorResults.frontMatter
+  // })
+  // const authorDetails = await Promise.all(authorPromise)
 
   // rss
   if (allPosts.length > 0) {
@@ -52,7 +52,7 @@ export const getStaticProps: GetStaticProps<{
   return {
     props: {
       post,
-      authorDetails,
+      // authorDetails,
       prev,
       next,
     },
@@ -61,7 +61,7 @@ export const getStaticProps: GetStaticProps<{
 
 export default function Blog({
   post,
-  authorDetails,
+  // authorDetails,
   prev,
   next,
 }: InferGetStaticPropsType<typeof getStaticProps>) {
@@ -75,7 +75,7 @@ export default function Blog({
           toc={toc}
           mdxSource={mdxSource}
           frontMatter={frontMatter}
-          authorDetails={authorDetails}
+          // authorDetails={authorDetails}
           prev={prev}
           next={next}
         />
