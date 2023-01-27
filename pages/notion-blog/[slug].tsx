@@ -9,6 +9,7 @@ import slugify from 'slugify'
 import ArticleList from '@/components/ArticleList'
 import siteMetadata from '@/data/siteMetadata'
 import Image from '@/components/Image'
+import PageTitle from '@/components/PageTitle'
 
 const ArticlePage = ({ content, title, coverImage, publishedDate, summary, moreArticles }) => {
   const publishedOn = getLocalizedDate(publishedDate)
@@ -34,9 +35,7 @@ const ArticlePage = ({ content, title, coverImage, publishedDate, summary, moreA
               <div className="mb-2 flex items-center justify-center space-x-2 text-sm text-gray-500">
                 <div className="">{publishedOn}</div>
               </div>
-              <div className="text-w-4xl font-extrabold tracking-tight text-gray-900 sm:text-4xl">
-                {title}
-              </div>
+              <PageTitle>{title}</PageTitle>
               <div className="mx-auto mt-3 max-w-3xl text-xl leading-8 text-gray-500 sm:mt-4">
                 {summary}
               </div>

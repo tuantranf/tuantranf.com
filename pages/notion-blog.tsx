@@ -5,6 +5,7 @@ import { useState } from 'react'
 import ArticleList from '@/components/ArticleList'
 import { filterArticles } from '@/utils/filterArticles'
 import Category from '@/components/Category'
+import PageTitle from '@/components/PageTitle'
 
 export default function Index({ articles, categories }) {
   const [selectedTag, setSelectedTag] = useState<string>(null)
@@ -19,9 +20,7 @@ export default function Index({ articles, categories }) {
       </div>
       <Container>
         <div className="py-8">
-          <div className="my-8 text-3xl font-bold text-gray-900">
-            {!selectedTag ? 'Latest articles' : `${selectedTag} articles`}
-          </div>
+          <PageTitle>{!selectedTag ? 'Latest articles' : `${selectedTag} articles`}</PageTitle>
           <ArticleList articles={filteredArticles} />
         </div>
       </Container>
