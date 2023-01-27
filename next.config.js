@@ -59,7 +59,12 @@ const nextConfig = {
     dirs: ['pages', 'components', 'lib', 'layouts', 'scripts'],
   },
   images: {
-    domains: ['tuantranf.com', 's3.us-west-2.amazonaws.com', 'archive.tuantranf.com'],
+    domains: [
+      'tuantranf.com',
+      's3.us-west-2.amazonaws.com',
+      'archive.tuantranf.com',
+      'images.unsplash.com',
+    ],
   },
   async headers() {
     return [
