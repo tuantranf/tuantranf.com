@@ -29,7 +29,7 @@ export default function Index({ articles, categories }) {
 }
 
 export const getStaticProps = async () => {
-  const data = await getAllArticles(process.env.BLOG_DATABASE_ID)
+  const data = await getAllArticles()
 
   const { articles, categories } = convertToArticleList(data)
 

@@ -5,7 +5,8 @@ const notion = new Client({
   auth: process.env.NOTION_SECRET,
 })
 
-export const getAllArticles = async (databaseId) => {
+export const getAllArticles = async () => {
+  const databaseId = process.env.BLOG_DATABASE_ID
   const response = await notion.databases.query({
     database_id: databaseId,
     filter: {
@@ -31,11 +32,11 @@ export const getAllArticles = async (databaseId) => {
 
 const mapArticleProperties = (article) => {
   const { id, properties } = article
-
   return {
     id: id,
     title: properties?.title?.title[0].plain_text || '',
     categories: properties?.categories?.multi_select.map((category: any) => category.name) || [],
+    tags: properties?.tags?.multi_select.map((tag: any) => tag.name) || [],
     author: {
       name: properties?.Author?.created_by.name,
       imageUrl: properties?.Author?.created_by.avatar_url,
@@ -149,4 +150,20 @@ export const getArticlePageData = async (page: any, slug: any, databaseId) => {
     slug,
     moreArticles,
   }
+}
+
+export const getAllTagsFromPosts = (posts: any) => {
+  const taggedPosts = posts.filter((post) => post?.tags?.length > 0)
+
+  const tags = [...taggedPosts.map((p) => p.tags).flat()]
+  const tagObj = {}
+  tags.forEach((tag: any) => {
+    if (tag in tagObj) {
+      tagObj[tag]++
+    } else {
+      tagObj[tag] = 1
+    }
+  })
+  console.log(tagObj)
+  return tagObj
 }
