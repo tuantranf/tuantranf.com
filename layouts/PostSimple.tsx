@@ -7,21 +7,21 @@ import formatDate from '@/lib/utils/formatDate'
 import Comments from '@/components/comments'
 import ScrollTopAndComment from '@/components/ScrollTopAndComment'
 import { ReactNode } from 'react'
-import { PostFrontMatter } from 'types/PostFrontMatter'
+import { Article } from '@/types/Article'
 
 interface Props {
-  frontMatter: PostFrontMatter
+  article: Article
   children: ReactNode
   next?: { slug: string; title: string }
   prev?: { slug: string; title: string }
 }
 
-export default function PostLayout({ frontMatter, next, prev, children }: Props) {
-  const { slug, date, title } = frontMatter
+export default function PostLayout({ article, next, prev, children }: Props) {
+  const { slug, publishedDate, title } = article
 
   return (
     <SectionContainer>
-      <BlogSEO url={`${siteMetadata.siteUrl}/blog/${frontMatter.slug}`} {...frontMatter} />
+      <BlogSEO url={`${siteMetadata.siteUrl}/blog/${article.slug}`} {...article} />
       <ScrollTopAndComment />
       <article>
         <div>
@@ -31,7 +31,7 @@ export default function PostLayout({ frontMatter, next, prev, children }: Props)
                 <div>
                   <dt className="sr-only">Published on</dt>
                   <dd className="text-base font-medium leading-6 text-gray-500 dark:text-gray-400">
-                    <time dateTime={date}>{formatDate(date)}</time>
+                    <time dateTime={publishedDate}>{formatDate(publishedDate)}</time>
                   </dd>
                 </div>
               </dl>
@@ -47,7 +47,7 @@ export default function PostLayout({ frontMatter, next, prev, children }: Props)
             <div className="divide-y divide-gray-200 dark:divide-gray-700 xl:col-span-3 xl:row-span-2 xl:pb-0">
               <div className="prose max-w-none pt-10 pb-8 dark:prose-dark">{children}</div>
             </div>
-            <Comments frontMatter={frontMatter} />
+            <Comments frontMatter={article} />
             <footer>
               <div className="flex flex-col text-sm font-medium sm:flex-row sm:justify-between sm:text-base">
                 {prev && (

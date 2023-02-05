@@ -2,8 +2,7 @@ import { TagSEO } from '@/components/SEO'
 import siteMetadata from '@/data/siteMetadata'
 import ListLayout from '@/layouts/ListLayout'
 import generateRss from '@/lib/generate-rss'
-import { getAllFilesFrontMatter } from '@/lib/mdx'
-import { getAllTags } from '@/lib/tags'
+import { convertToArticleList, getAllArticles } from '@/lib/utils/notion'
 import kebabCase from '@/lib/utils/kebabCase'
 import fs from 'fs'
 import path from 'path'
@@ -11,21 +10,24 @@ import path from 'path'
 const root = process.cwd()
 
 export async function getStaticPaths() {
-  const tags = await getAllTags('blog')
+  const data = await getAllArticles()
+  const { tags } = convertToArticleList(data)
 
+  const paths = tags.map((tag) => ({
+    params: {
+      tag: kebabCase(tag),
+    },
+  }))
   return {
-    paths: Object.keys(tags).map((tag) => ({
-      params: {
-        tag,
-      },
-    })),
+    paths: paths,
     fallback: false,
   }
 }
 
 export async function getStaticProps({ params }) {
-  const allPosts = await getAllFilesFrontMatter('blog')
-  const filteredPosts = allPosts.filter(
+  const data = await getAllArticles()
+  const { articles } = convertToArticleList(data)
+  const filteredPosts = articles.filter(
     (post) => post.draft !== true && post.tags.map((t) => kebabCase(t)).includes(params.tag)
   )
 

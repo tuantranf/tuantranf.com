@@ -1,15 +1,3 @@
-export type Article = {
-  title: string
-  categories?: Array<string>
-  coverImage: string
-  summary: string
-  publishedDate?: any
-  lastUpdatedDate?: any
-  readingTime?: string
-  user: any
-  id: string
-}
-
 export type Language =
   | 'markup'
   | 'bash'

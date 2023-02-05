@@ -1,17 +1,31 @@
 import { Fragment } from 'react'
 import Link from 'next/link'
-import { getAllArticles, getArticlePage, getArticlePageData } from '@/utils/notion'
+import {
+  getAllArticles,
+  convertToArticleList,
+  getArticlePage,
+  getArticlePageData,
+} from '@/lib/utils/notion'
 import { Layout } from '@/layouts/Layout'
 import { renderBlocks } from '@/components/notionBlocks/renderBlocks'
-import getLocalizedDate from '@/utils/getLocalizedDate'
+import getLocalizedDate from '@/lib/utils/getLocalizedDate'
 import Container from '@/components/Container'
 import slugify from 'slugify'
-import ArticleList from '@/components/ArticleList'
+import PostList from '@/components/PostList'
 import siteMetadata from '@/data/siteMetadata'
 import Image from '@/components/Image'
 import PageTitle from '@/components/PageTitle'
+import Tag from '@/components/Tag'
 
-const ArticlePage = ({ content, title, coverImage, publishedDate, summary, moreArticles }) => {
+const ArticlePage = ({
+  content,
+  title,
+  coverImage,
+  publishedDate,
+  summary,
+  tags,
+  moreArticles,
+}) => {
   const publishedOn = getLocalizedDate(publishedDate)
 
   const slug = slugify(title).toLowerCase()
@@ -27,10 +41,10 @@ const ArticlePage = ({ content, title, coverImage, publishedDate, summary, moreA
         description={summary}
         imageUrl={ogImage}
         date={new Date(publishedDate).toISOString()}
-        ogUrl={`/notion-blog/${slug}`}
+        ogUrl={`/blog/${slug}`}
       >
         <div>
-          <div className="mx-auto -mb-48 px-6 py-16 pb-48 text-center md:-mb-96 md:pb-96">
+          <div className="mx-auto -mb-48 px-6 pb-48 text-center md:-mb-96 md:pb-96">
             <div className="mx-auto max-w-3xl">
               <div className="mb-2 flex items-center justify-center space-x-2 text-sm text-gray-500">
                 <div className="">{publishedOn}</div>
@@ -39,17 +53,22 @@ const ArticlePage = ({ content, title, coverImage, publishedDate, summary, moreA
               <div className="mx-auto mt-3 max-w-3xl text-xl leading-8 text-gray-500 sm:mt-4">
                 {summary}
               </div>
+              <div className="flex flex-wrap justify-center">
+                {tags.map((tag) => (
+                  <Tag key={tag} text={tag} />
+                ))}
+              </div>
             </div>
           </div>
 
-          <div className="mx-auto my-16 max-w-5xl px-6 md:px-8">
+          <div className="mx-auto -mb-48 px-6 py-16 pb-48 text-center md:-mb-96 md:pb-96">
             {coverImage && (
               <Image
                 className="aspect-video w-full rounded-xl object-cover"
                 src={coverImage}
                 alt="cover image"
-                width={400}
-                height={300}
+                width={600}
+                height={450}
               />
             )}
           </div>
@@ -61,14 +80,14 @@ const ArticlePage = ({ content, title, coverImage, publishedDate, summary, moreA
           <div className="border-t py-12">
             <Container>
               <div className="my-8 flex items-center justify-between">
-                <div className="text-3xl font-bold text-gray-900">Latest articles</div>
-                <Link href="/" passHref={true}>
+                <div className="text-3xl font-bold text-gray-900">Other articles</div>
+                <Link href="/blog" passHref={true}>
                   <span className="cursor-pointer font-semibold text-gray-900">
                     More articles ➜
                   </span>
                 </Link>
               </div>
-              <ArticleList articles={moreArticles} />
+              <PostList articles={moreArticles} />
             </Container>
           </div>
         </div>
@@ -79,7 +98,7 @@ const ArticlePage = ({ content, title, coverImage, publishedDate, summary, moreA
 
 export const getStaticPaths = async () => {
   const paths = []
-  const data: any = await getAllArticles(process.env.BLOG_DATABASE_ID)
+  const data: any = await getAllArticles()
 
   data.forEach((result) => {
     if (result.object === 'page') {
@@ -98,10 +117,10 @@ export const getStaticPaths = async () => {
 }
 
 export const getStaticProps = async ({ params: { slug } }) => {
-  const data = await getAllArticles(process.env.BLOG_DATABASE_ID)
+  const data = await getAllArticles()
 
   const page = getArticlePage(data, slug)
-  const result = await getArticlePageData(page, slug, process.env.BLOG_DATABASE_ID)
+  const result = await getArticlePageData(page, slug)
 
   return {
     props: result,

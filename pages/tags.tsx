@@ -2,12 +2,14 @@ import Link from '@/components/Link'
 import { PageSEO } from '@/components/SEO'
 import Tag from '@/components/Tag'
 import siteMetadata from '@/data/siteMetadata'
-import { getAllTags } from '@/lib/tags'
+import { convertToArticleList, getAllArticles, getAllTagsFromPosts } from '@/lib/utils/notion'
 import kebabCase from '@/lib/utils/kebabCase'
 import { GetStaticProps, InferGetStaticPropsType } from 'next'
 
 export const getStaticProps: GetStaticProps<{ tags: Record<string, number> }> = async () => {
-  const tags = await getAllTags('blog')
+  const data = await getAllArticles()
+  const { articles } = convertToArticleList(data)
+  const tags = getAllTagsFromPosts(articles)
 
   return { props: { tags } }
 }
