@@ -8,7 +8,7 @@ import siteMetadata from '@/data/siteMetadata'
 import Comments from '@/components/comments'
 import ScrollTopAndComment from '@/components/ScrollTopAndComment'
 import { ReactNode } from 'react'
-import { PostFrontMatter } from 'types/PostFrontMatter'
+import { Article } from '@/types/Article'
 import { AuthorFrontMatter } from 'types/AuthorFrontMatter'
 
 const editUrl = (fileName) => `${siteMetadata.siteRepo}/blob/master/data/blog/${fileName}`
@@ -25,22 +25,22 @@ const postDateTemplate: Intl.DateTimeFormatOptions = {
 }
 
 interface Props {
-  frontMatter: PostFrontMatter
+  article: Article
   authorDetails: AuthorFrontMatter[]
   next?: { slug: string; title: string }
   prev?: { slug: string; title: string }
   children: ReactNode
 }
 
-export default function PostLayout({ frontMatter, authorDetails, next, prev, children }: Props) {
-  const { slug, fileName, date, title, tags } = frontMatter
+export default function PostLayout({ article, authorDetails, next, prev, children }: Props) {
+  const { slug, publishedDate, title, tags } = article
 
   return (
     <SectionContainer>
       <BlogSEO
         url={`${siteMetadata.siteUrl}/blog/${slug}`}
         authorDetails={authorDetails}
-        {...frontMatter}
+        {...article}
       />
       <ScrollTopAndComment />
       <article>
@@ -51,8 +51,11 @@ export default function PostLayout({ frontMatter, authorDetails, next, prev, chi
                 <div>
                   <dt className="sr-only">Published on</dt>
                   <dd className="text-base font-medium leading-6 text-gray-500 dark:text-gray-400">
-                    <time dateTime={date}>
-                      {new Date(date).toLocaleDateString(siteMetadata.locale, postDateTemplate)}
+                    <time dateTime={publishedDate}>
+                      {new Date(publishedDate).toLocaleDateString(
+                        siteMetadata.locale,
+                        postDateTemplate
+                      )}
                     </time>
                   </dd>
                 </div>
@@ -82,9 +85,9 @@ export default function PostLayout({ frontMatter, authorDetails, next, prev, chi
                   {'Discuss on Twitter'}
                 </Link>
                 {` • `}
-                <Link href={editUrl(fileName)}>{'View on GitHub'}</Link>
+                {/* <Link href={editUrl(fileName)}>{'View on GitHub'}</Link> */}
               </div>
-              <Comments frontMatter={frontMatter} />
+              <Comments frontMatter={article} />
             </div>
             <div className="divide-gray-200 dark:divide-gray-700 xl:col-span-3 xl:row-span-2 xl:pb-0">
               <div>

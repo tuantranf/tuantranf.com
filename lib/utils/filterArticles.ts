@@ -5,6 +5,6 @@ export function filterArticles(articles, selectedTag) {
       if (selectedTag === null) {
         return true
       }
-      return article.categories.includes(selectedTag)
+      return article.tags.includes(selectedTag)
     })
 }

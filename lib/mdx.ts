@@ -104,7 +104,7 @@ export async function getFileBySlug<T>(type: 'authors' | 'blog', slug: string | 
       slug: slug || null,
       fileName: fs.existsSync(mdxPath) ? `${slug}.mdx` : `${slug}.md`,
       ...frontmatter,
-      date: frontmatter.date ? new Date(frontmatter.date).toISOString() : null,
+      publishedDate: frontmatter.date ? new Date(frontmatter.date).toISOString() : null,
     },
   }
 }
@@ -130,7 +130,7 @@ export async function getAllFilesFrontMatter(folder: 'blog') {
       allFrontMatter.push({
         ...frontmatter,
         slug: formatSlug(fileName),
-        date: frontmatter.date ? new Date(frontmatter.date).toISOString() : null,
+        publishedDate: frontmatter.date ? new Date(frontmatter.date).toISOString() : null,
       })
     }
   })

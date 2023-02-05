@@ -1,6 +1,6 @@
-import { Article } from '@/utils/types'
+import { Article } from '@/types/Article'
 import slugify from 'slugify'
-import getLocalizedDate from '@/utils/getLocalizedDate'
+import getLocalizedDate from '@/lib/utils/getLocalizedDate'
 import Image from '@/components/Image'
 
 type Props = {
@@ -17,7 +17,7 @@ export default function ArticleCard({ article }: Props) {
       <div className="group flex cursor-pointer flex-col overflow-hidden">
         <div className="relative">
           <div className="absolute">
-            {article?.categories?.map((category) => (
+            {article?.tags?.map((category) => (
               <div
                 key={category}
                 className="relative left-3 top-3 z-[2] mb-2 mr-2 inline-flex items-center rounded bg-gray-100 px-3 py-1.5 text-xs font-bold uppercase text-gray-600 shadow"
@@ -45,7 +45,7 @@ export default function ArticleCard({ article }: Props) {
           </div>
           <div className="mt-4 flex items-center">
             <div className="mb-2 flex space-x-1 text-sm text-gray-400">
-              {article.categories.map((category) => (
+              {article.tags.map((category) => (
                 <div key={category}>
                   <span className="font-semibold text-gray-600">{category} </span>
                   <span aria-hidden="true">&middot;</span>

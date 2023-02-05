@@ -5,7 +5,8 @@ const notion = new Client({
   auth: process.env.NOTION_SECRET,
 })
 
-export const getAllArticles = async (databaseId) => {
+export const getAllArticles = async () => {
+  const databaseId = process.env.BLOG_DATABASE_ID
   const response = await notion.databases.query({
     database_id: databaseId,
     filter: {
@@ -31,11 +32,12 @@ export const getAllArticles = async (databaseId) => {
 
 const mapArticleProperties = (article) => {
   const { id, properties } = article
-
   return {
     id: id,
     title: properties?.title?.title[0].plain_text || '',
-    categories: properties?.categories?.multi_select.map((category: any) => category.name) || [],
+    slug: slugify(properties?.title?.title[0].plain_text).toLowerCase(),
+    draft: false,
+    tags: properties?.tags?.multi_select.map((tag: any) => tag.name) || [],
     author: {
       name: properties?.Author?.created_by.name,
       imageUrl: properties?.Author?.created_by.avatar_url,
@@ -45,27 +47,28 @@ const mapArticleProperties = (article) => {
       properties?.coverImage?.files[0]?.external?.url ||
       '/static/images/ocean.jpeg',
     publishedDate: properties?.publishedAt?.date?.start ?? '',
+    lastUpdatedDate: properties?.UpdatedAt?.date ?? '',
     summary: properties?.description?.rich_text[0]?.plain_text ?? '',
   }
 }
 
 export const convertToArticleList = (tableData: any) => {
-  let categories: string[] = []
+  let tags: string[] = []
 
   const articles = tableData.map((article: any) => {
     const { properties } = article
 
-    properties?.categories?.multi_select?.forEach((category: any) => {
+    properties?.tags?.multi_select?.forEach((category: any) => {
       const { name } = category
-      if (!categories.includes(name) && name) {
-        categories.push(name)
+      if (!tags.includes(name) && name) {
+        tags.push(name)
       }
     })
 
     return mapArticleProperties(article)
   })
 
-  return { articles, categories }
+  return { articles, tags }
 }
 
 export const getMoreArticlesToSuggest = async (databaseId, currentArticleTitle) => {
@@ -120,7 +123,9 @@ export function shuffleArray(array: Array<any>) {
   return array
 }
 
-export const getArticlePageData = async (page: any, slug: any, databaseId) => {
+export const getArticlePageData = async (page: any, slug: any) => {
+  const databaseId = process.env.BLOG_DATABASE_ID
+
   let content = []
   let title = ''
 
@@ -149,4 +154,19 @@ export const getArticlePageData = async (page: any, slug: any, databaseId) => {
     slug,
     moreArticles,
   }
+}
+
+export const getAllTagsFromPosts = (posts: any) => {
+  const taggedPosts = posts.filter((post) => post?.tags?.length > 0)
+
+  const tags = [...taggedPosts.map((p) => p.tags).flat()]
+  const tagObj = {}
+  tags.forEach((tag: any) => {
+    if (tag in tagObj) {
+      tagObj[tag]++
+    } else {
+      tagObj[tag] = 1
+    }
+  })
+  return tagObj
 }

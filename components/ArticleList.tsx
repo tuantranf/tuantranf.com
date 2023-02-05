@@ -1,5 +1,5 @@
-import { Article } from '@/utils/types'
-import ArticleCard from './ArticleCard'
+import { Article } from '@/types/Article'
+import PostItem from './PostItem'
 
 type Props = {
   articles: Article[]
@@ -7,9 +7,9 @@ type Props = {
 
 export default function ArticleList({ articles }: Props) {
   return (
-    <div className="grid gap-10 sm:grid-cols-2 lg:gap-12">
+    <div>
       {articles.map((article) => (
-        <ArticleCard article={article} key={article.id} />
+        <PostItem article={article} key={article.id} />
       ))}
     </div>
   )
