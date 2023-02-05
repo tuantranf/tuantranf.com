@@ -1,11 +1,7 @@
 import Link from '@/components/Link'
+import { Pagination as PaginationType } from '@/types/Pagination'
 
-interface Props {
-  totalPages: number
-  currentPage: number
-}
-
-export default function Pagination({ totalPages, currentPage }: Props) {
+export default function Pagination({ totalPages, currentPage }: PaginationType) {
   const prevPage = currentPage - 1 > 0
   const nextPage = currentPage + 1 <= totalPages
 

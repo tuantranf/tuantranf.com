@@ -20,7 +20,7 @@ export function Layout(props) {
     <>
       <MetaHead {...metaHeadProps} />
       {/* <Header /> */}
-      <div className="pt-14">{children}</div>
+      <div className="pt-2">{children}</div>
 
       <Footer />
     </>

@@ -1,4 +1,4 @@
-import { getAllArticles, getAllTagsFromPosts, convertToArticleList } from '@/utils/notion'
+import { getAllArticles, convertToArticleList } from '@/lib/utils/notion'
 import SearchLayout from '@/layouts/search'
 
 export default function search({ tags, posts }) {
@@ -7,9 +7,7 @@ export default function search({ tags, posts }) {
 
 export const getStaticProps = async () => {
   const posts = await getAllArticles()
-  const { articles, categories } = convertToArticleList(posts)
-
-  const tags = getAllTagsFromPosts(articles)
+  const { articles, tags } = convertToArticleList(posts)
 
   return {
     props: {

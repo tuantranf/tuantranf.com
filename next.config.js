@@ -10,7 +10,7 @@ const ContentSecurityPolicy = `
   img-src * blob: data:;
   media-src 'none';
   connect-src *;
-  font-src 'self';
+  font-src * blob: data:;
   frame-src giscus.app
 `
 
@@ -64,6 +64,7 @@ const nextConfig = {
       's3.us-west-2.amazonaws.com',
       'archive.tuantranf.com',
       'images.unsplash.com',
+      'redash.io',
     ],
   },
   async headers() {

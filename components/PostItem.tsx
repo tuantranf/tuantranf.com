@@ -1,4 +1,4 @@
-import { Article } from '@/utils/types'
+import { Article } from '@/types/Article'
 import formatDate from '@/lib/utils/formatDate'
 import Link from '@/components/Link'
 import Tag from '@/components/Tag'
@@ -8,14 +8,14 @@ type Props = {
 }
 
 export default function PostItem({ article }: Props) {
-  const { slug, date, title, summary, tags } = article
+  const { slug, publishedDate, title, summary, tags } = article
   return (
     <li key={slug} className="py-12">
       <article className="space-y-2 xl:grid xl:grid-cols-4 xl:items-baseline xl:space-y-0">
         <dl>
           <dt className="sr-only">Published on</dt>
           <dd className="text-base font-medium leading-6 text-gray-500 dark:text-gray-400">
-            <time dateTime={date}>{formatDate(date)}</time>
+            <time dateTime={publishedDate}>{formatDate(publishedDate)}</time>
           </dd>
         </dl>
         <div className="space-y-3 xl:col-span-3">

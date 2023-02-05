@@ -1,8 +1,8 @@
 import Head from 'next/head'
 import { useRouter } from 'next/router'
 import siteMetadata from '@/data/siteMetadata'
-import { AuthorFrontMatter } from 'types/AuthorFrontMatter'
-import { PostFrontMatter } from 'types/PostFrontMatter'
+import { AuthorFrontMatter } from '@/types/AuthorFrontMatter'
+import { Article } from '@/types/Article'
 
 interface CommonSEOProps {
   title: string
@@ -15,6 +15,7 @@ interface CommonSEOProps {
         url: string
       }[]
   twImage: string
+  converImage?: string
   canonicalUrl?: string
 }
 
@@ -99,23 +100,25 @@ export const TagSEO = ({ title, description }: PageSEOProps) => {
   )
 }
 
-interface BlogSeoProps extends PostFrontMatter {
+interface BlogSeoProps extends Article {
   authorDetails?: AuthorFrontMatter[]
   url: string
+  converImage?: string
+  canonicalUrl?: string
 }
 
 export const BlogSEO = ({
   authorDetails,
   title,
   summary,
-  date,
-  lastmod,
+  publishedDate,
+  lastUpdatedDate,
   url,
-  images = [],
+  converImage,
   canonicalUrl,
 }: BlogSeoProps) => {
-  const publishedAt = new Date(date).toISOString()
-  const modifiedAt = new Date(lastmod || date).toISOString()
+  const publishedAt = new Date(publishedDate).toISOString()
+  const modifiedAt = new Date(lastUpdatedDate || publishedDate).toISOString()
   // const imagesArr =
   //   images.length === 0
   //     ? [siteMetadata.socialBanner]
@@ -131,10 +134,13 @@ export const BlogSEO = ({
   // })
 
   let featuredImages = []
+  if (converImage) {
+    featuredImages.push(converImage)
+  }
   if (featuredImages.length === 0) {
     const ogImage = `${siteMetadata.siteUrl}/api/og-image?title=${encodeURIComponent(
       title
-    )}&date=${encodeURIComponent(date)}`
+    )}&date=${encodeURIComponent(publishedDate)}`
     featuredImages = [
       {
         '@type': 'ImageObject',
@@ -193,8 +199,8 @@ export const BlogSEO = ({
         canonicalUrl={canonicalUrl}
       />
       <Head>
-        {date && <meta property="article:published_time" content={publishedAt} />}
-        {lastmod && <meta property="article:modified_time" content={modifiedAt} />}
+        {publishedDate && <meta property="article:published_time" content={publishedAt} />}
+        {lastUpdatedDate && <meta property="article:modified_time" content={modifiedAt} />}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{

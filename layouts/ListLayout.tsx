@@ -3,18 +3,19 @@ import Tag from '@/components/Tag'
 import { ComponentProps, useState } from 'react'
 import Pagination from '@/components/Pagination'
 import PostList from '@/components/PostList'
-import { PostFrontMatter } from 'types/PostFrontMatter'
+import { Article } from '@/types/Article'
+
 interface Props {
-  posts: PostFrontMatter[]
+  posts: Article[]
   title: string
-  initialDisplayPosts?: PostFrontMatter[]
+  initialDisplayPosts?: Article[]
   pagination?: ComponentProps<typeof Pagination>
 }
 
 export default function ListLayout({ posts, title, initialDisplayPosts = [], pagination }: Props) {
   const [searchValue, setSearchValue] = useState('')
-  const filteredBlogPosts = posts.filter((frontMatter) => {
-    const searchContent = frontMatter.title + frontMatter.summary + frontMatter.tags.join(' ')
+  const filteredBlogPosts = posts.filter((article) => {
+    const searchContent = article.title + article.summary + article.tags.join(' ')
     return searchContent.toLowerCase().includes(searchValue.toLowerCase())
   })
 
@@ -54,7 +55,7 @@ export default function ListLayout({ posts, title, initialDisplayPosts = [], pag
           </div>
         </div>
 
-        <PostList articles={filteredBlogPosts} />
+        <PostList articles={displayPosts} />
       </div>
       {pagination && pagination.totalPages > 1 && !searchValue && (
         <Pagination currentPage={pagination.currentPage} totalPages={pagination.totalPages} />

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import ArticleList from '@/components/ArticleList'
+import PostList from '@/components/PostList'
 import Container from '@/components/Container'
 import Tags from '@/components/Tags'
 import PropTypes from 'prop-types'
@@ -41,14 +41,7 @@ const SearchLayout = ({ tags, posts, currentTag }) => {
       </div>
       <Tags tags={tags} currentTag={currentTag} />
       <div className="article-container my-8">
-        {!filteredBlogPosts.length ? (
-          <p className="text-gray-500 dark:text-gray-300">No posts found.</p>
-        ) : (
-          <ArticleList articles={filteredBlogPosts.slice(0, 20)} />
-        )}
-        {/* {filteredBlogPosts.slice(0, 20).map((post) => (
-          <Card key={post.id} title={post.title} />
-        ))} */}
+        <PostList articles={filteredBlogPosts.slice(0, 20)} />
       </div>
     </Container>
   )

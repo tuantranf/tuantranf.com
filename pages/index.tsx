@@ -2,20 +2,22 @@ import Link from '@/components/Link'
 import { PageSEO } from '@/components/SEO'
 import PostList from '@/components/PostList'
 import siteMetadata from '@/data/siteMetadata'
-import { getAllFilesFrontMatter } from '@/lib/mdx'
+import { convertToArticleList, getAllArticles } from '@/lib/utils/notion'
 import { GetStaticProps, InferGetStaticPropsType } from 'next'
-import { PostFrontMatter } from 'types/PostFrontMatter'
+import { Article } from '@/types/Article'
 import NewsletterForm from '@/components/NewsletterForm'
 
 const MAX_DISPLAY = 5
 
-export const getStaticProps: GetStaticProps<{ posts: PostFrontMatter[] }> = async () => {
-  const posts = await getAllFilesFrontMatter('blog')
+export const getStaticProps: GetStaticProps<{ articles: Article[] }> = async () => {
+  const data = await getAllArticles()
 
-  return { props: { posts } }
+  const { articles } = convertToArticleList(data)
+
+  return { props: { articles } }
 }
 
-export default function Home({ posts }: InferGetStaticPropsType<typeof getStaticProps>) {
+export default function Home({ articles }: InferGetStaticPropsType<typeof getStaticProps>) {
   return (
     <>
       <PageSEO title={siteMetadata.title} description={siteMetadata.description} />
@@ -29,9 +31,9 @@ export default function Home({ posts }: InferGetStaticPropsType<typeof getStatic
           </p>
         </div>
 
-        <PostList articles={posts.slice(0, MAX_DISPLAY)} />
+        <PostList articles={articles.slice(0, MAX_DISPLAY)} />
       </div>
-      {posts.length > MAX_DISPLAY && (
+      {articles.length > MAX_DISPLAY && (
         <div className="flex justify-end text-base font-medium leading-6">
           <Link
             href="/blog"
