@@ -1,11 +1,6 @@
 import { Fragment } from 'react'
 import Link from 'next/link'
-import {
-  getAllArticles,
-  convertToArticleList,
-  getArticlePage,
-  getArticlePageData,
-} from '@/lib/utils/notion'
+import { getAllArticles, getArticlePage, getArticlePageData } from '@/lib/utils/notion'
 import { Layout } from '@/layouts/Layout'
 import { renderBlocks } from '@/components/notionBlocks/renderBlocks'
 import getLocalizedDate from '@/lib/utils/getLocalizedDate'
