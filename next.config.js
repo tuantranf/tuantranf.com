@@ -65,6 +65,7 @@ const nextConfig = {
       'archive.tuantranf.com',
       'images.unsplash.com',
       'redash.io',
+      'tuantranf-com.vercel.app',
     ],
   },
   async headers() {

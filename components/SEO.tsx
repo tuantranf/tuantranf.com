@@ -133,21 +133,22 @@ export const BlogSEO = ({
   //   }
   // })
 
-  let featuredImages = []
-  if (converImage) {
-    featuredImages.push(converImage)
-  }
-  if (featuredImages.length === 0) {
-    const ogImage = `${siteMetadata.siteUrl}/api/og-image?title=${encodeURIComponent(
+  let ogImage = null
+  if (process.env.OG_IMAGE_URL) {
+    ogImage = `${process.env.OG_IMAGE_URL}/api/og-image?title=${encodeURIComponent(
       title
     )}&date=${encodeURIComponent(publishedDate)}`
-    featuredImages = [
-      {
-        '@type': 'ImageObject',
-        url: `${ogImage}`,
-      },
-    ]
+  } else {
+    ogImage = `${siteMetadata.siteUrl}/public/static/images/twitter-card.png`
   }
+
+  const featuredImages = [
+    {
+      '@type': 'ImageObject',
+      url: `${ogImage}`,
+    },
+  ]
+
   let authorList
   if (authorDetails) {
     authorList = authorDetails.map((author) => {

@@ -35,7 +35,7 @@ const mapArticleProperties = (article) => {
   return {
     id: id,
     title: properties?.title?.title[0].plain_text || '',
-    slug: slugify(properties?.title?.title[0].plain_text).toLowerCase(),
+    slug: slugify(properties?.title?.title[0].plain_text, { strict: true }).toLowerCase(),
     draft: false,
     tags: properties?.tags?.multi_select.map((tag: any) => tag.name) || [],
     author: {
@@ -100,7 +100,11 @@ export const getMoreArticlesToSuggest = async (databaseId, currentArticleTitle) 
 export const getArticlePage = (data, slug) => {
   const response = data.find((result) => {
     if (result.object === 'page') {
-      const resultSlug = slugify(result.properties.title.title[0].plain_text).toLowerCase()
+      const resultSlug = slugify(result.properties.title.title[0].plain_text, {
+        strict: true,
+      }).toLowerCase()
+      console.log(slug)
+      console.log(resultSlug)
       return resultSlug === slug
     }
     return false
@@ -129,7 +133,7 @@ export const getArticlePageData = async (page: any, slug: any) => {
   let content = []
   let title = ''
 
-  title = page.properties.title.title[0].plain_text
+  title = page?.properties?.title.title[0].plain_text
 
   const moreArticles: any = await getMoreArticlesToSuggest(databaseId, title)
 

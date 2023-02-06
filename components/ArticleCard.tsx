@@ -8,7 +8,7 @@ type Props = {
 }
 
 export default function ArticleCard({ article }: Props) {
-  const slug = slugify(article.title).toLowerCase()
+  const slug = slugify(article.title, { strict: true }).toLowerCase()
 
   const formattedTime = getLocalizedDate(article.publishedDate)
 
