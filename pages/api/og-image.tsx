@@ -1,8 +1,8 @@
-import siteMetadata from '@/data/siteMetadata'
 import { ImageResponse } from '@vercel/og'
+import formatDate from '@/lib/utils/formatDate'
 
 export const config = {
-  runtime: 'edge',
+  runtime: 'experimental-edge',
 }
 
 export default function handler(req) {
@@ -17,26 +17,43 @@ export default function handler(req) {
 
     return new ImageResponse(
       (
-        <div className="ml-3 flex flex h-[630px] w-[1200px] items-center justify-center rounded-md border p-16 shadow">
-          <div className="flex flex-col items-center justify-center text-center">
-            <div className="flex flex-row">
-              <img
-                src="https://tuantranf.com/static/images/logo.png"
-                className="h-16 w-16 rounded-full"
-                alt="tuantranf"
-              />
-              <div className="flex flex-col pl-8">
-                <div className="text-[22px]">{siteMetadata.headerTitle}</div>
-                <div className="text-[18px] text-blue-700">{siteMetadata.siteUrl}</div>
-              </div>
-            </div>
-
-            <div className="text-2xl">
-              <div className="text-grey-700 text-[22px]">{date}</div>
-            </div>
-            <div className="mt-4 mb-8 text-center text-7xl font-extrabold leading-[80px]">
-              {title}
-            </div>
+        <div
+          style={{
+            backgroundColor: 'white',
+            backgroundSize: '150px 150px',
+            height: '100%',
+            width: '100%',
+            display: 'flex',
+            textAlign: 'center',
+            alignItems: 'center',
+            justifyContent: 'center',
+            flexDirection: 'column',
+            flexWrap: 'nowrap',
+          }}
+        >
+          <div
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              justifyItems: 'center',
+            }}
+          >
+            <img src="https://tuantranf.com/static/images/logo.png" height={200} alt="tuantranf" />
+          </div>
+          <div
+            style={{
+              fontSize: 40,
+              fontStyle: 'normal',
+              letterSpacing: '-0.025em',
+              color: 'black',
+              marginTop: 30,
+              padding: '0 120px',
+              lineHeight: 1.4,
+              whiteSpace: 'pre-wrap',
+            }}
+          >
+            {`${title} - ${formatDate(date)}`}
           </div>
         </div>
       ),
