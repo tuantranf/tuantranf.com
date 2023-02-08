@@ -1,10 +1,6 @@
 import { ImageResponse } from '@vercel/og'
 import formatDate from '@/lib/utils/formatDate'
 
-export const config = {
-  runtime: 'experimental-edge',
-}
-
 export default function handler(req) {
   try {
     const { searchParams } = new URL(req.url)
