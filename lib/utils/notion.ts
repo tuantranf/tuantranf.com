@@ -103,8 +103,6 @@ export const getArticlePage = (data, slug) => {
       const resultSlug = slugify(result.properties.title.title[0].plain_text, {
         strict: true,
       }).toLowerCase()
-      console.log(slug)
-      console.log(resultSlug)
       return resultSlug === slug
     }
     return false
