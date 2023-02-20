@@ -84,15 +84,20 @@ export function renderBlocks(block) {
       const src = value.type === 'external' ? value.external.url : value.file.url
       const caption = value.caption.length >= 1 ? value.caption[0].plain_text : ''
       return (
-        <figure className="mt-0">
-          <Image
-            className="aspect-video rounded-lg"
-            src={src}
-            placeholder="blur"
-            alt={caption ? caption : 'A visual depiction of what is being written about'}
-          />
-          {caption && <figcaption className="text-center">{caption}</figcaption>}
-        </figure>
+        <div className="mx-auto -mb-48 px-6 py-16 pb-48 text-center md:-mb-96 md:pb-96">
+          <div className="mx-auto text-center" style={{ width: '600px', position: 'relative' }}>
+            <figure className="mt-0">
+              <Image
+                className="aspect-video rounded-lg"
+                src={src}
+                layout="fill"
+                // placeholder="blur"
+                alt={caption ? caption : 'A visual depiction of what is being written about'}
+              />
+              {caption && <figcaption className="text-center">{caption}</figcaption>}
+            </figure>
+          </div>
+        </div>
       )
     case 'code':
       return (
