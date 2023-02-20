@@ -59,7 +59,7 @@ const nextConfig = {
     dirs: ['pages', 'components', 'lib', 'layouts', 'scripts'],
   },
   images: {
-    unoptimized: true,
+    // unoptimized: true,
     domains: [
       'tuantranf.com',
       's3.us-west-2.amazonaws.com',
