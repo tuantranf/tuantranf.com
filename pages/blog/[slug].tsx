@@ -58,14 +58,16 @@ const ArticlePage = ({
 
           <div className="mx-auto -mb-48 px-6 py-16 pb-48 text-center md:-mb-96 md:pb-96">
             {coverImage && (
-              <div className="mx-auto text-center" style={{ width: '600px', position: 'relative' }}>
+              // responsive div for the cover image
+
+              <div className="relative mx-auto text-center sm:w-full md:w-3/4 lg:w-2/3 xl:w-1/2">
                 <Image
-                  className="aspect-video w-full rounded-xl object-cover"
+                  className="aspect-w-16 aspect-h-9 rounded-xl object-cover"
                   src={coverImage}
                   alt="cover image"
+                  layout="responsive"
                   width={640}
                   height={360}
-                  layout="responsive"
                 />
               </div>
             )}
