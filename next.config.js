@@ -59,6 +59,7 @@ const nextConfig = {
     dirs: ['pages', 'components', 'lib', 'layouts', 'scripts'],
   },
   images: {
+    // unoptimized: true,
     domains: [
       'tuantranf.com',
       's3.us-west-2.amazonaws.com',
@@ -66,6 +67,7 @@ const nextConfig = {
       'images.unsplash.com',
       'redash.io',
       'tuantranf-com.vercel.app',
+      'd2908q01vomqb2.cloudfront.net',
     ],
   },
   async headers() {

@@ -58,13 +58,16 @@ const ArticlePage = ({
 
           <div className="mx-auto -mb-48 px-6 py-16 pb-48 text-center md:-mb-96 md:pb-96">
             {coverImage && (
-              <Image
-                className="aspect-video w-full rounded-xl object-cover"
-                src={coverImage}
-                alt="cover image"
-                width={600}
-                height={450}
-              />
+              <div className="mx-auto text-center" style={{ width: '600px', position: 'relative' }}>
+                <Image
+                  className="aspect-video w-full rounded-xl object-cover"
+                  src={coverImage}
+                  alt="cover image"
+                  width={640}
+                  height={360}
+                  layout="responsive"
+                />
+              </div>
             )}
           </div>
           <div className="mx-auto mb-24 max-w-4xl space-y-8 px-6 md:px-8">
@@ -121,7 +124,7 @@ export const getStaticProps = async ({ params: { slug } }) => {
 
   return {
     props: result,
-    revalidate: 30,
+    revalidate: 10,
   }
 }
 
