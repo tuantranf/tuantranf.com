@@ -11,8 +11,7 @@
     "lint": "next lint --fix --dir pages --dir components --dir lib --dir layouts --dir scripts",
     "prepare": "husky install",
     "blog": "git checkout -b \"blog/$(date '+%Y-%m-%d-%H-%M')\"",
-    "release": "gh pr create --base release -t \"release $(date '+%Y-%m-%d %H:%M')\" --head=master",
-    "postbuild": "upload-notion-images-to-cloudinary"
+    "release": "gh pr create --base release -t \"release $(date '+%Y-%m-%d %H:%M')\" --head=master"
   },
   "dependencies": {
     "@fontsource/inter": "4.5.2",

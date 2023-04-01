@@ -1,16 +1,13 @@
 import { useState } from 'react'
 import siteMetadata from '@/data/siteMetadata'
 import PostList from '@/components/PostList'
-import { filterArticles } from '@/lib/utils/filterArticles'
-import Category from '@/components/Category'
-import PageTitle from '@/components/PageTitle'
 import { PageSEO } from '@/components/SEO'
 import { convertToArticleList, getAllArticles } from '@/lib/utils/notion'
+
 import { GetStaticProps, InferGetStaticPropsType } from 'next'
 import { Article } from '@/types/Article'
 import { Pagination as PaginationType } from '@/types/Pagination'
 import Pagination from '@/components/Pagination'
-
 import Container from '@/components/Container'
 
 export const POSTS_PER_PAGE = 5

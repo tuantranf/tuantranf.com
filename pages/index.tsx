@@ -6,6 +6,11 @@ import { convertToArticleList, getAllArticles } from '@/lib/utils/notion'
 import { GetStaticProps, InferGetStaticPropsType } from 'next'
 import { Article } from '@/types/Article'
 import NewsletterForm from '@/components/NewsletterForm'
+import generateRss from '@/lib/generate-rss'
+import fs from 'fs'
+import path from 'path'
+
+const root = process.cwd()
 
 const MAX_DISPLAY = 5
 
@@ -13,6 +18,14 @@ export const getStaticProps: GetStaticProps<{ articles: Article[] }> = async () 
   const data = await getAllArticles()
 
   const { articles } = convertToArticleList(data)
+
+  // rss
+  if (articles.length > 0) {
+    const rss = generateRss(articles, `feed.xml`)
+    const rssPath = path.join(root, 'public')
+    fs.mkdirSync(rssPath, { recursive: true })
+    fs.writeFileSync(path.join(rssPath, 'feed.xml'), rss)
+  }
 
   return { props: { articles } }
 }
