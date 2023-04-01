@@ -68,6 +68,7 @@ const nextConfig = {
       'redash.io',
       'tuantranf-com.vercel.app',
       'd2908q01vomqb2.cloudfront.net',
+      'res.cloudinary.com',
     ],
   },
   async headers() {
