@@ -43,9 +43,7 @@ const mapArticleProperties = (article) => {
       imageUrl: properties?.Author?.created_by.avatar_url,
     },
     coverImage:
-      properties?.cover?.files[0]?.file?.url ||
-      properties?.cover?.files[0]?.external?.url ||
-      '/static/images/ocean.jpeg',
+      properties?.cover?.files[0]?.file?.url || properties?.cover?.files[0]?.external?.url || '',
     publishedDate: properties?.publishedAt?.date?.start ?? '',
     lastUpdatedDate: properties?.UpdatedAt?.date ?? '',
     summary: properties?.description?.rich_text[0]?.plain_text ?? '',
