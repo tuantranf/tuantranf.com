@@ -2,11 +2,11 @@ import { Client, LogLevel } from '@notionhq/client'
 import slugify from 'slugify'
 
 const notion = new Client({
-  auth: process.env.NOTION_SECRET,
+  auth: process.env.NOTION_TOKEN,
 })
 
 export const getAllArticles = async () => {
-  const databaseId = process.env.BLOG_DATABASE_ID
+  const databaseId = process.env.NOTION_DATABASE_ID
   const response = await notion.databases.query({
     database_id: databaseId,
     filter: {
@@ -126,7 +126,7 @@ export function shuffleArray(array: Array<any>) {
 }
 
 export const getArticlePageData = async (page: any, slug: any) => {
-  const databaseId = process.env.BLOG_DATABASE_ID
+  const databaseId = process.env.NOTION_DATABASE_ID
 
   let content = []
   let title = ''

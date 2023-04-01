@@ -1,1 +1,40 @@
-{}
+{
+  "githubPullRequests.queries": [
+    {
+      "label": "Waiting For My Review",
+      "query": "is:open review-requested:${user}"
+    },
+    {
+      "label": "Assigned To Me",
+      "query": "is:open assignee:${user}"
+    },
+    {
+      "label": "Created By Me",
+      "query": "is:open author:${user}"
+    },
+    {
+      "label": "Mentioned Me",
+      "query": "is:open mentions:${user}"
+    }
+  ],
+  "githubIssues.queries": [
+    {
+      "label": "My Issues",
+      "query": "default"
+    }
+    // {
+    //     "label": "Created Issues",
+    //     "query": "author:${user} state:open repo:${owner}/${repository} sort:created-desc"
+    // },
+    // {
+    //     "label": "Recent Issues",
+    //     "query": "state:open repo:${owner}/${repository} sort:updated-desc"
+    // }
+  ],
+  "githubPullRequests.remotes": ["origin"],
+  "githubPullRequests.useReviewMode": {
+    "merged": false,
+    "closed": false
+  },
+  "githubPullRequests.ignoredPullRequestBranches": ["master"]
+}
