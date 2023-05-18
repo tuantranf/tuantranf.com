@@ -23,10 +23,22 @@ class MyDocument extends Document {
           <meta name="msapplication-TileColor" content="#000000" />
           <meta name="theme-color" content="#000000" />
           <link rel="alternate" type="application/rss+xml" href="/feed.xml" />
+          <script
+            dangerouslySetInnerHTML={{
+              __html: `window.chatbaseConfig={chatbotId:"9GRW87vBkFSqhQQRx8cmY"};`,
+            }}
+          />
+          <script src="https://www.chatbase.co/embed.min.js" id="9GRW87vBkFSqhQQRx8cmY" defer />
         </Head>
         <body className="bg-white text-black antialiased dark:bg-gray-900 dark:text-white">
           <Main />
           <NextScript />
+          <iframe
+            src="https://www.chatbase.co/chatbot-iframe/9GRW87vBkFSqhQQRx8cmY"
+            width="100%"
+            height="700"
+            frameBorder="0"
+          ></iframe>
         </body>
       </Html>
     )
