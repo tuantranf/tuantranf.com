@@ -33,12 +33,6 @@ class MyDocument extends Document {
         <body className="bg-white text-black antialiased dark:bg-gray-900 dark:text-white">
           <Main />
           <NextScript />
-          <iframe
-            src="https://www.chatbase.co/chatbot-iframe/9GRW87vBkFSqhQQRx8cmY"
-            width="100%"
-            height="700"
-            frameBorder="0"
-          ></iframe>
         </body>
       </Html>
     )
