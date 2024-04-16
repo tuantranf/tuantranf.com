@@ -69,7 +69,7 @@ const nextConfig = {
       'tuantranf-com.vercel.app',
       'd2908q01vomqb2.cloudfront.net',
       'res.cloudinary.com',
-      'learn.microsoft.com,
+      'learn.microsoft.com',
     ],
   },
   async headers() {
